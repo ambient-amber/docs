@@ -1,0 +1,10 @@
+listener и subscriber похожи. Одно из отличий - место конфигурации отслеживаемых событий.
+
+listener и subscriber должны быть вручную зарегестированы как сервисы в app/config/services.yml
+    services:
+        user_agent_subscriber:
+            class: App\EventListener\SomeSubscriber
+            tags:
+                - { name: kernel.event_subscriber }
+
+tag - тег внедрения зависимост. Когда возникнет событие kernel.request, оно вызовет нашу функцию.
