@@ -28,6 +28,18 @@
 
 // ------------------------------------------
 
+// Пересоздание базы
+> php bin/console doctrine:database:drop --force
+> php bin/console doctrine:database:create
+> php bin/console doctrine:migrations:migrate
+
+// ------------------------------------------
+
+// Запрос в консоли
+> php bin/console doctrine:query:sql "SELECT * FROM genus_scientist"
+
+// ------------------------------------------
+
 // Saving Entities https://symfonycasts.com/screencast/symfony-doctrine/saving-entities
 
 // ------------------------------------------
@@ -161,5 +173,34 @@ class Article
      */
     private $authorId;
 }
+
+// ------------------------------------------
+
+/*
+    Паттерны проектирования, к-е использует doctrine:
+
+    1) Unit of work
+        $entity1 = new Entity();
+        $em->persist($entity1);
+
+        $entity2 = new Entity();
+        $em->persist($entity2);
+
+        $em->flush();
+
+        В начале собираются (persist) действия над объектами в рамках одного процесса
+            $entityUpdates()
+            $entityInsertions()
+            $entityDeletions()
+        Потом один раз применяются (flush) собранные изменения
+
+    2) Identity map
+        $repo = $em->getRepository(Entity::Class);
+        $entity1 = $repo->find(25);
+        $entity2 = $repo->find(25);
+
+        $entity1 === $entity2
+        Второго запроса не будет
+*/
 
 // ------------------------------------------
